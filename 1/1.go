@@ -44,6 +44,8 @@ func main() {
 		log.Fatalln("Error reading file")
 	}
 
+	// Part 1
+
 	frequency := 0
 	frequencyChanges := strings.Split(rawBytesToString(frequencyChangesRaw), "\n")
 	for _, frequencyChange := range frequencyChanges {
@@ -51,6 +53,32 @@ func main() {
 			frequency = applyFrequencyChange(frequency, frequencyChange)
 		}
 	}
-
 	fmt.Println("Calculated frequency:", frequency)
+
+	// Part 2
+
+	frequency = 0
+	frequencyHits := make(map[int]int)
+
+	foundDuplicate := false
+	for !foundDuplicate {
+		for _, frequencyChange := range frequencyChanges {
+			if frequencyChange != "" {
+				frequency = applyFrequencyChange(frequency, frequencyChange)
+
+				_, present := frequencyHits[frequency]
+				if present {
+					frequencyHits[frequency] += 1
+				} else {
+					frequencyHits[frequency] = 1
+				}
+
+				if !foundDuplicate && frequencyHits[frequency] == 2 {
+					foundDuplicate = true
+					fmt.Println("First duplicate frequency:", frequency)
+					break
+				}
+			}
+		}
+	}
 }
