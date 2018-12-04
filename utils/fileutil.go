@@ -17,5 +17,15 @@ func ReadLinesFromFile(fileName string) []string {
 
 	lines := strings.Split(data, "\n")
 
-	return lines
+	return RemoveEmptyStrings(lines)
+}
+
+func RemoveEmptyStrings(lines []string) []string {
+	cleanedStrings := make([]string, 0, len(lines))
+	for _, line := range lines {
+		if line != "" {
+			cleanedStrings = append(cleanedStrings, line)
+		}
+	}
+	return cleanedStrings
 }

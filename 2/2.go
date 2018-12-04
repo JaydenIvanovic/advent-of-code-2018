@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/jaydenivanovic/advent-of-code-2018/utils"
 )
 
-func main() {
+func partOne() {
 	lines := utils.ReadLinesFromFile("./2.txt")
 
 	two := 0
@@ -35,4 +36,49 @@ func main() {
 	}
 
 	fmt.Println(two * three)
+}
+
+func validBoxPair(a string, b string) bool {
+	const MissMax = 2
+
+	length := len(a)
+	i := 0
+	misses := 0
+	for i < length && misses < MissMax {
+		if a[i] != b[i] {
+			misses += 1
+		}
+		i += 1
+	}
+
+	return misses < MissMax
+}
+
+func getCommonCharacters(a string, b string) string {
+	builder := strings.Builder{}
+
+	for i, _ := range a {
+		if a[i] == b[i] {
+			builder.WriteByte(a[i])
+		}
+	}
+
+	return builder.String()
+}
+
+func partTwo() {
+	lines := utils.ReadLinesFromFile("./2.txt")
+
+	for i, line := range lines {
+		for _, innerLine := range lines[i+1:] {
+			if validBoxPair(line, innerLine) {
+				fmt.Println(getCommonCharacters(line, innerLine))
+			}
+		}
+	}
+}
+
+func main() {
+	partOne()
+	partTwo()
 }
