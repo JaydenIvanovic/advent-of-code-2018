@@ -2,6 +2,7 @@ package utils
 
 import (
 	"log"
+	"strconv"
 	"strings"
 )
 
@@ -14,4 +15,14 @@ func RawBytesToString(data []byte) string {
 	}
 
 	return b.String()
+}
+
+func StrToInt(i string) int {
+	num, err := strconv.Atoi(strings.Trim(i, " "))
+
+	if err != nil {
+		panic(err)
+	}
+
+	return num
 }
