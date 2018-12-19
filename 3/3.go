@@ -20,14 +20,9 @@ func (fp *FabricPlan) CreateKey(x int, y int) string {
 }
 
 var fabricOverlapMap map[string]int
+var fabricPlanMap map[string][]string
 
 func partOne() {
-	lines := utils.ReadLinesFromFile("./puzzle_input.txt")
-
-	for _, line := range lines {
-		processLine(line)
-	}
-
 	overlapCount := 0
 	for _, count := range fabricOverlapMap {
 		if count >= 2 {
@@ -36,6 +31,23 @@ func partOne() {
 	}
 
 	fmt.Println(overlapCount)
+}
+
+func partTwo() {
+	for id, planKeys := range fabricPlanMap {
+		found := true
+
+		for _, key := range planKeys {
+			if fabricOverlapMap[key] > 1 {
+				found = false
+				break
+			}
+		}
+
+		if found {
+			fmt.Println(id)
+		}
+	}
 }
 
 func processLine(line string) {
@@ -54,6 +66,7 @@ func processLine(line string) {
 			} else {
 				fabricOverlapMap[key] = 1
 			}
+			fabricPlanMap[fabricPlan.Id] = append(fabricPlanMap[fabricPlan.Id], key)
 		}
 	}
 }
@@ -79,5 +92,14 @@ func createFabricPlan(planInput string) *FabricPlan {
 
 func main() {
 	fabricOverlapMap = make(map[string]int)
+	fabricPlanMap = make(map[string][]string)
+
+	lines := utils.ReadLinesFromFile("./puzzle_input.txt")
+
+	for _, line := range lines {
+		processLine(line)
+	}
+
 	partOne()
+	partTwo()
 }
